@@ -19,29 +19,6 @@
 
 ---
 
-## Структура репозитория
-
-```
-.
-├── football_segmentation.ipynb   # Основной notebook с результатами
-├── training_results.json         # Сохранённые метрики обучения
-├── README.md                     # Данный файл
-├── dataset/
-│   └── football/
-│       ├── images/               # 100 .jpg + маски .png
-│       └── COCO_Football Pixel.json
-├── train_common.py               # Общие утилиты (Dataset, метрики, train_model)
-├── train_part1.py                # Обучение: CNN baseline + Transformer baseline
-├── train_part2.py                # Обучение: CNN improved + Transformer improved
-└── train_part3.py                # Обучение: Custom U-Net
-```
-
----
-
-## Требования
-
-- Python 3.10+
-- pip (рекомендуется виртуальное окружение)
 
 ### Зависимости
 
@@ -62,19 +39,15 @@ jupyter
 
 ## Установка и запуск
 
-### 1. Клонирование репозитория
-
 ```bash
-git clone <url-репозитория>
-cd <папка-репозитория>
+git clone https://github.com/kumaroid/CVLabs.git
+cd CVLabs
 ```
-
 ### 2. Создание виртуального окружения
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate       # Linux / macOS
-# venv\Scripts\activate        # Windows
+source venv/bin/activate
 ```
 
 ### 3. Установка зависимостей
@@ -97,34 +70,6 @@ curl -L "https://www.kaggle.com/api/v1/datasets/download/sadhliroomyprime/footba
 unzip dataset/football_seg.zip -d dataset/football
 ```
 
-> **Альтернатива:** через Kaggle CLI  
-> ```bash
-> pip install kaggle
-> kaggle datasets download sadhliroomyprime/football-semantic-segmentation -p dataset/ --unzip
-> ```
-
-### 5. Запуск notebook
-
-```bash
-jupyter notebook football_segmentation.ipynb
-```
-
-Notebook содержит все результаты обучения (встроены как JSON-словари).  
-Для воспроизведения обучения с нуля раскомментируйте вызовы `train_model(...)` в соответствующих ячейках.
-
-### 6. (Опционально) Переобучение моделей
-
-Если хотите запустить обучение заново (занимает ~15 минут на GPU / ~30 мин на CPU):
-
-```bash
-python3 train_part1.py   # CNN baseline + Transformer baseline
-python3 train_part2.py   # CNN improved + Transformer improved
-python3 train_part3.py   # Custom U-Net (base + improved)
-```
-
-Результаты сохраняются в `training_results.json`.
-
----
 
 ## Результаты обучения
 
@@ -172,24 +117,3 @@ python3 train_part3.py   # Custom U-Net (base + improved)
 
 ---
 
-## Стек технологий
-
-- **PyTorch** — фреймворк глубокого обучения
-- **segmentation_models.pytorch** — готовые архитектуры сегментации
-- **albumentations** — аугментация изображений
-- **pycocotools** — парсинг COCO-аннотаций
-- **scikit-learn** — разбивка train/val
-- **matplotlib** — визуализация
-
----
-
-## Воспроизводимость
-
-Зафиксированы все seed'ы:
-```python
-random.seed(42)
-np.random.seed(42)
-torch.manual_seed(42)
-```
-
-Разбивка train/val выполняется через `train_test_split(..., random_state=42)`.
